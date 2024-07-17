@@ -1,7 +1,3 @@
-let humanChoice = "";
-let humanScore = 0;
-let computerScore = 0;
-
 function getComputerChoice() {
     const choices = ["rock", "paper", "scissors"];
     const randomIndex = Math.floor(Math.random() * choices.length);
@@ -9,29 +5,36 @@ function getComputerChoice() {
 }
 
 document.querySelector(".scissor").addEventListener("click", () => {
-    humanChoice = "scissor";
-    computerChoice = getComputerChoice();
+    let humanChoice = "scissors";
+    let computerChoice = getComputerChoice();
     const result = playRound(computerChoice, humanChoice);
     console.log("Human Score:", result.humanScore, "Computer Score:", result.computerScore);
+    updateScores(result);
 });
 
 document.querySelector(".paper").addEventListener("click", () => {
-    humanChoice = "paper";
-    computerChoice = getComputerChoice();
+    let humanChoice = "paper";
+    let computerChoice = getComputerChoice();
     const result = playRound(computerChoice, humanChoice);
     console.log("Human Score:", result.humanScore, "Computer Score:", result.computerScore);
+    updateScores(result);
 });
 
+
 document.querySelector(".rock").addEventListener("click", () => {
-    humanChoice = "rock";
-    computerChoice = getComputerChoice();
+    let humanChoice = "rock";
+    let computerChoice = getComputerChoice();
     const result = playRound(computerChoice, humanChoice);
     console.log("Human Score:", result.humanScore, "Computer Score:", result.computerScore);
+    updateScores(result);
 });
+
+let humanScore = 0;
+let computerScore = 0;
 
 function playRound(computerChoice, humanChoice) {
     if (humanChoice === computerChoice) {
-        alert("It's a tie!")
+        alert(`Computer chose ${computerChoice}. It's a tie!`)
     
     } else if (
         (humanChoice === "rock" && computerChoice === "scissors") ||
@@ -48,7 +51,11 @@ function playRound(computerChoice, humanChoice) {
         }
         alert(`${outcomeMessage}, Human Wins the round!`);
         humanScore++;
-    } else {
+    } else if (
+        (computerChoice === "rock" && humanChoice === "scissors") ||
+        (computerChoice === "scissors" && humanChoice === "paper") ||
+        (computerChoice === "paper" && humanChoice === "rock")
+    ) {
         let outcomeMessage;
         if (computerChoice === "rock") {
             outcomeMessage = `Computer chose ${computerChoice}. Rock beats scissors`;
@@ -63,4 +70,22 @@ function playRound(computerChoice, humanChoice) {
     return { humanScore, computerScore };
 }
 
+function updateScores(result) {
+    const currentHumanScore = document.querySelector(".human-score");
+    currentHumanScore.textContent = result.humanScore++;
+
+    const currentComputerScore = document.querySelector(".computer-score");
+    currentComputerScore.textContent = result.computerScore++;
+
+    if (humanScore === 5 || computerScore === 5) {
+        if (humanScore === 5) {
+            alert("Human wins the game!");
+        } else if (computerScore === 5) {
+            alert("Computer wins the game!");
+        }
+        humanScore = 0;
+        computerScore = 0;
+        console.clear();
+    }
+}
 
